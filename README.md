@@ -49,6 +49,17 @@ Welcome to PaketMutfakApp, an advanced Order Management System designed to strea
       
          npx json-server --watch db.json --port 3000
 
+   **Warning:**
+   
+      I got an error when using 127.0.0.1 as the local host because of the Android studio emulator from android studio therefore I changed the URL to:
+   
+         http://10.0.2.2:3000/orders
+
+      If you are working with the local device you may need to change the URL inside of the app for fetching data as :
+   
+         http://127.0.0.1:3000/orders
+      
+
    ## Screenshots
 
    # Orders Page<br>
