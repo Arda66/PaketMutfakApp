@@ -113,7 +113,7 @@ const OrdersScreen: React.FC = () => {
     );
   };
   const createBasket = () => {
-    // Generate a new basket ID, simple increment or UUID could be used
+    // Generate a new basket ID, simple increment is used here
     const newBasketId = `${baskets.length + 1}`;
     const newBasket: Basket = {
       id: newBasketId,
@@ -127,7 +127,7 @@ const OrdersScreen: React.FC = () => {
     // Clear the selected orders from state
     setSelectedOrderIds([]);
 
-    // Optionally, update orders to mark them as in a basket
+    // Update orders to mark them as in a basket
     setOrders(currentOrders =>
       currentOrders.map(order =>
         selectedOrderIds.includes(order.id)
@@ -159,7 +159,7 @@ const OrdersScreen: React.FC = () => {
             basket={basket}
             couriers={couriers}
             orders={orders.filter(order => basket.orders.includes(order.id))}
-            onRemoveOrder={onRemoveOrder} // Pass onRemoveOrder as a prop
+            onRemoveOrder={onRemoveOrder}
           />
         ))}
       {orders
