@@ -48,4 +48,12 @@ Before running the application, you need to set up and start the local server to
    ```bash
    npx json-server --watch db.json --port 3000
 
+## Starting the Server
+
+To start the local server which the application relies on, run the following command in your terminal at the project's root directory:
+
+```bash
+npx json-server --watch db.json --port 3000
+
+
 
