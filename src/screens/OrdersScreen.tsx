@@ -66,7 +66,6 @@ const OrdersScreen: React.FC = () => {
 
         const onTheWayBasket = updatedBaskets.splice(basketIndex, 1)[0];
         setOnTheWayBaskets(prevBaskets => [...prevBaskets, onTheWayBasket]);
-        console.log('On the way basket : ', onTheWayBasket);
       }
 
       // Update the state

@@ -36,10 +36,10 @@ const styles = StyleSheet.create({
     color: '#333',
   },
   orderId: {
-    color: '#1a73e8', // Blue color for Order ID
+    color: '#1a73e8',
   },
   address: {
-    color: '#236338', // Green color for Address
+    color: '#236338',
   },
   card: {
     backgroundColor: 'white',
