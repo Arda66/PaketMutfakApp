@@ -23,7 +23,6 @@ const CourierSelector: React.FC<CourierSelectorProps> = ({
       <Picker
         selectedValue={selectedCourier}
         onValueChange={itemValue => {
-          console.log('itemValue', itemValue);
           itemValue &&
             (setSelectedCourier(itemValue.toString()),
             onAssign(itemValue.toString()));
