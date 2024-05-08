@@ -1,4 +1,4 @@
-![image](https://github.com/Arda66/PaketMutfakApp/assets/61588522/d720c356-9989-4dfb-a427-01bb187dfb9b)# PaketMutfakApp 📦🚚
+# PaketMutfakApp 📦🚚
 
 Welcome to PaketMutfakApp, an advanced Order Management System designed to streamline the handling and delivery of orders. Built with React Native, this app facilitates a seamless cross-platform experience, suitable for both iOS and Android devices. It features an interactive user interface for managing orders, grouping them into baskets, assigning couriers, and tracking their delivery statuses.
 
