@@ -40,16 +40,23 @@ const OnTheWayBasketView: React.FC<OnTheWayBasketViewProps> = ({
             <OrderCard order={order} />
             <View style={{alignItems: 'center'}}>
               <TouchableOpacity
-                style={styles.tickContainer}
+                style={[
+                  styles.tickContainer,
+                  {
+                    backgroundColor: deliveredOrders.includes(order.id)
+                      ? 'green'
+                      : 'white',
+                  },
+                ]}
                 onPress={() => markAsDelivered(order.id)}>
                 <Icon
                   name="check"
-                  size={30}
-                  color={deliveredOrders.includes(order.id) ? 'green' : 'black'}
+                  size={26}
+                  color={deliveredOrders.includes(order.id) ? 'white' : 'black'}
                 />
               </TouchableOpacity>
               <TouchableOpacity
-                style={styles.tickContainer}
+                style={[styles.tickContainer, {backgroundColor: 'pink'}]}
                 onPress={() => markAsNotDelivered(order.id)}>
                 <Icon
                   name="times"
@@ -131,9 +138,10 @@ const styles = StyleSheet.create({
   tickContainer: {
     padding: 5,
     borderRadius: 5,
+    marginRight: 5,
     backgroundColor: '#f8f8f8',
     borderWidth: 1,
-    borderColor: 'black',
+    borderColor: 'gray',
     marginBottom: 5,
   },
 });

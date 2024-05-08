@@ -46,8 +46,8 @@ const BasketView: React.FC<BasketViewProps> = ({
       setSelectedOrderId(availableOrders[0].id);
     }
   }, [availableOrders, selectedOrderId]);
+
   const deliveryPressed = () => {
-    // show alert confirmation first
     Alert.alert(
       'Ready for Delivery',
       'Are you sure you want to confirm as ready for delivery?',

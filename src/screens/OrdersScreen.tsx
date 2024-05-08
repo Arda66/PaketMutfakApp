@@ -164,11 +164,6 @@ const OrdersScreen: React.FC = () => {
           />
         ))}
       {orders
-        .filter(order => order.status === 'PENDING')
-        .map(order => (
-          <OrderCard key={order.id} order={order} />
-        ))}
-      {orders
         .filter(
           order =>
             order.status === 'PREPARING' &&
