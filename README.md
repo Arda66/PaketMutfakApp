@@ -30,30 +30,23 @@ Welcome to PaketMutfakApp, an advanced Order Management System designed to strea
    ```bash
    git clone https://github.com/Arda66/PaketMutfakApp.git
 
-2. ## Local Server Setup
+2. **Local Server Setup**
 
-Before running the application, you need to set up and start the local server to manage data interactions. Follow these steps to get the server up and running:
+    Before running the application, you need to set up and start the local server to manage data interactions. Follow these steps to get the server up and running:
 
- **Install JSON Server:**
+    **Install JSON Server:**
 
-   If you don't have JSON Server installed globally, you can install it using npm:
+      If you don't have JSON Server installed globally, you can install it using npm:
 
-   ```bash
-   npm install -g json-server
+      
+         npm install -g json-server
 
- **Start The Server:**
 
-   Navigate to the root directory of your project where db.json is located and run the following command to start your local server:
+    **Start The Server:**
 
-   ```bash
-   npx json-server --watch db.json --port 3000
+      Navigate to the root directory of your project where db.json is located and run the following command to start your local server:
 
-## Starting the Server
-
-To start the local server which the application relies on, run the following command in your terminal at the project's root directory:
-
-```bash
-npx json-server --watch db.json --port 3000
-
+      
+         npx json-server --watch db.json --port 3000
 
 
