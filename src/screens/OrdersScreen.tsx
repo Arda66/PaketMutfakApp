@@ -26,7 +26,7 @@ const OrdersScreen: React.FC = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const ordersResponse = await fetch('http://10.0.2.2:3000/orders');
+        const ordersResponse = await fetch('http://10.0.2.2:3000/orders'); // This is the local IP address of the machine running the emulator
         const couriersResponse = await fetch('http://10.0.2.2:3000/couriers');
         const basketsResponse = await fetch('http://10.0.2.2:3000/baskets');
         if (!ordersResponse.ok || !couriersResponse.ok || !basketsResponse.ok) {
