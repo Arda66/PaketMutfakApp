@@ -1,5 +1,5 @@
 // src/components/BasketView.tsx
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   View,
   Text,
@@ -7,12 +7,14 @@ import {
   StyleSheet,
   TouchableOpacity,
   Modal,
+  Alert,
 } from 'react-native';
 import {Basket, Courier, Order} from '../types';
 import CourierSelector from './CourierSelector';
 import OrderCard from './OrderCard';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {Picker} from '@react-native-picker/picker';
+
 interface BasketViewProps {
   basket: Basket;
   couriers?: Courier[];
@@ -20,7 +22,7 @@ interface BasketViewProps {
   onRemoveOrder: (basketId: string, orderId: string) => void;
   onAddOrder: (basketId: string, orderId: string) => void;
   allOrders: Order[];
-  setBasketStatus: (status: string) => void;
+  setBasketStatus: (status: string, courier: Courier | null) => void;
 }
 
 const BasketView: React.FC<BasketViewProps> = ({
@@ -35,11 +37,34 @@ const BasketView: React.FC<BasketViewProps> = ({
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [selectedOrderId, setSelectedOrderId] = useState('');
   const [selectedCourier, setSelectedCourier] = useState<Courier | null>(null);
-  // Filter orders that are not already in the basket and are not already in any basket
+  // Filter orders that are not already in the basket
   const availableOrders = allOrders.filter(
     order => !basket.orders.includes(order.id) && order.status !== 'IN_BASKET',
   );
-
+  useEffect(() => {
+    if (availableOrders.length > 0 && !selectedOrderId) {
+      setSelectedOrderId(availableOrders[0].id);
+    }
+  }, [availableOrders, selectedOrderId]);
+  const deliveryPressed = () => {
+    // show alert confirmation first
+    Alert.alert(
+      'Ready for Delivery',
+      'Are you sure you want to confirm as ready for delivery?',
+      [
+        {
+          text: 'Cancel',
+          style: 'cancel',
+        },
+        {
+          text: 'OK',
+          onPress: () => {
+            setBasketStatus(basket.id, 'ON_THE_WAY', selectedCourier.name);
+          },
+        },
+      ],
+    );
+  };
   return (
     <View style={styles.container}>
       <View style={styles.basketHeader}>
@@ -50,7 +75,7 @@ const BasketView: React.FC<BasketViewProps> = ({
           </TouchableOpacity>
         )}
         {selectedCourier && availableOrders.length >= 0 && (
-          <TouchableOpacity onPress={() => setBasketStatus('ON_THE_WAY')}>
+          <TouchableOpacity onPress={deliveryPressed}>
             <Text style={styles.deliveryButton}>Ready for Delivery</Text>
           </TouchableOpacity>
         )}
@@ -62,7 +87,7 @@ const BasketView: React.FC<BasketViewProps> = ({
             <OrderCard order={order} />
             <TouchableOpacity
               onPress={() => onRemoveOrder(basket.id, order.id)}>
-              <Icon name="trash" size={24} color="red" />
+              <Icon name="trash" size={30} color="red" />
             </TouchableOpacity>
           </View>
         ) : null;
@@ -129,7 +154,7 @@ const styles = StyleSheet.create({
   orderContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between',
+    justifyContent: 'space-around',
     marginBottom: 5,
   },
   basketHeader: {

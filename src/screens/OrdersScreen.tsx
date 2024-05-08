@@ -5,6 +5,7 @@ import OrderCard from '../components/OrderCard';
 import BasketView from '../components/BasketView';
 import {Order, Courier, Basket} from '../types';
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome5';
+import OnTheWayBasketView from '../components/OnTheWayBasketView';
 
 const OrdersScreen: React.FC = () => {
   const [orders, setOrders] = useState<Order[]>([]);
@@ -12,6 +13,7 @@ const OrdersScreen: React.FC = () => {
   const [baskets, setBaskets] = useState<Basket[]>([]);
   const [selectedOrderIds, setSelectedOrderIds] = useState<string[]>([]);
   const [onTheWayBaskets, setOnTheWayBaskets] = useState<Basket[]>([]);
+  const [deliveredOrders, setDeliveredOrders] = useState<string[]>([]);
 
   const toggleOrderSelection = (orderId: string) => {
     setSelectedOrderIds(current =>
@@ -43,7 +45,14 @@ const OrdersScreen: React.FC = () => {
 
     fetchData();
   }, []);
-  const setBasketStatus = (basketId: string, status: string) => {
+  const setBasketStatus = (
+    basketId: string,
+    status: string,
+    courierName: string,
+  ) => {
+    // Find the courier
+    const courier = couriers.find(c => c.name === courierName);
+
     // Find the basket
     const basketIndex = baskets.findIndex(basket => basket.id === basketId);
     if (basketIndex !== -1) {
@@ -51,10 +60,13 @@ const OrdersScreen: React.FC = () => {
       const updatedBaskets = [...baskets];
       updatedBaskets[basketIndex].status = status;
 
-      // If the status is "on the way", move it to the "on the way" section
-      if (status === 'ON_THE_WAY') {
+      // If the status is "on the way", set the courier of the basket
+      if (status === 'ON_THE_WAY' && courier) {
+        updatedBaskets[basketIndex].courier = courier.name;
+
         const onTheWayBasket = updatedBaskets.splice(basketIndex, 1)[0];
         setOnTheWayBaskets(prevBaskets => [...prevBaskets, onTheWayBasket]);
+        console.log('On the way basket : ', onTheWayBasket);
       }
 
       // Update the state
@@ -125,11 +137,12 @@ const OrdersScreen: React.FC = () => {
       ),
     );
   };
+
   return (
     <ScrollView style={styles.container}>
       <View style={styles.orderHeader}>
         <Text style={styles.header}>Pending Orders</Text>
-        {selectedOrderIds.length > 1 && (
+        {selectedOrderIds.length > 0 && (
           <Pressable onPress={createBasket}>
             <FontAwesomeIcon name="shopping-basket" size={24} color="orange" />
           </Pressable>
@@ -140,9 +153,7 @@ const OrdersScreen: React.FC = () => {
         .filter(basket => basket.status === 'READY')
         .map(basket => (
           <BasketView
-            setBasketStatus={(status: string) =>
-              setBasketStatus(basket.id, status)
-            }
+            setBasketStatus={setBasketStatus}
             allOrders={orders}
             onAddOrder={onAddOrder}
             key={basket.id}
@@ -173,20 +184,24 @@ const OrdersScreen: React.FC = () => {
         ))}
 
       <Text style={styles.header}>On the Way</Text>
-      {onTheWayBaskets.map(basket => (
-        <BasketView
-          setBasketStatus={(status: string) =>
-            setBasketStatus(basket.id, status)
-          }
-          allOrders={orders}
-          onAddOrder={onAddOrder}
-          key={basket.id}
-          basket={basket}
-          couriers={couriers}
-          orders={orders.filter(order => basket.orders.includes(order.id))}
-          onRemoveOrder={onRemoveOrder} // Pass onRemoveOrder as a prop
-        />
-      ))}
+      {onTheWayBaskets.map(basket => {
+        const allOrdersDelivered = basket.orders.every(orderId =>
+          deliveredOrders.includes(orderId),
+        );
+        return (
+          !allOrdersDelivered && (
+            <OnTheWayBasketView
+              orders={orders.filter(order => basket.orders.includes(order.id))}
+              key={basket.id}
+              basket={basket}
+              courier={basket.courier}
+              onOrderDelivered={orderId =>
+                setDeliveredOrders(prev => [...prev, orderId])
+              }
+            />
+          )
+        );
+      })}
     </ScrollView>
   );
 };
